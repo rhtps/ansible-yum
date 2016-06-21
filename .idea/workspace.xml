@@ -1,24 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e99db127-66b3-4cfd-815f-f092d84e1734" name="Default" comment="Ready to test">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/ansible-yum.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/defaults/main.yml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/files/CentOS-Base.repo" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/handlers/main.yml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tasks/cdn.yml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tasks/centos.yml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tasks/epel.yml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tasks/main.yml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/partition.j2" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/inventory" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/test.yml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/vars/main.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+    <list default="true" id="e99db127-66b3-4cfd-815f-f092d84e1734" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tasks/main.yml" afterPath="$PROJECT_DIR$/tasks/main.yml" />
     </list>
     <ignored path="ansible-yum.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -45,8 +30,8 @@
           <file leaf-file-name="main.yml" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/tasks/main.yml">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1440">
-                  <caret line="96" column="45" selection-start-line="96" selection-start-column="45" selection-end-line="96" selection-end-column="45" />
+                <state relative-caret-position="-360">
+                  <caret line="30" column="32" selection-start-line="30" selection-start-column="32" selection-end-line="30" selection-end-column="32" />
                   <folding />
                 </state>
               </provider>
@@ -89,8 +74,8 @@
           <file leaf-file-name="main.yml" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/vars/main.yml">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="283">
-                  <caret line="36" column="46" selection-start-line="36" selection-start-column="46" selection-end-line="36" selection-end-column="46" />
+                <state relative-caret-position="358">
+                  <caret line="41" column="0" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
@@ -112,8 +97,8 @@
         <option value="$PROJECT_DIR$/tasks/epel.yml" />
         <option value="$PROJECT_DIR$/tasks/epel_sync.yml" />
         <option value="$PROJECT_DIR$/tasks/centos.yml" />
-        <option value="$PROJECT_DIR$/tasks/main.yml" />
         <option value="$PROJECT_DIR$/vars/main.yml" />
+        <option value="$PROJECT_DIR$/tasks/main.yml" />
       </list>
     </option>
   </component>
@@ -489,7 +474,14 @@
       <option name="project" value="LOCAL" />
       <updated>1466531252601</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Ready to test">
+      <created>1466536411140</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1466536411140</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -530,7 +522,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial commit with Galaxy metadata" />
-    <option name="LAST_COMMIT_MESSAGE" value="Initial commit with Galaxy metadata" />
+    <MESSAGE value="Ready to test" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ready to test" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -585,18 +578,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tasks/main.yml">
+    <entry file="file://$PROJECT_DIR$/vars/main.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1440">
-          <caret line="96" column="45" selection-start-line="96" selection-start-column="45" selection-end-line="96" selection-end-column="45" />
+        <state relative-caret-position="358">
+          <caret line="41" column="0" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/vars/main.yml">
+    <entry file="file://$PROJECT_DIR$/tasks/main.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="283">
-          <caret line="36" column="46" selection-start-line="36" selection-start-column="46" selection-end-line="36" selection-end-column="46" />
+        <state relative-caret-position="-360">
+          <caret line="30" column="32" selection-start-line="30" selection-start-column="32" selection-end-line="30" selection-end-column="32" />
           <folding />
         </state>
       </provider>

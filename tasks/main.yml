@@ -16,12 +16,19 @@
     dev: "{{ docroot_dev }}"
     force: no
 
-- name: Make the yum html directory
+- name: make docroot
   file:
-    path: "{{ docroot_dir }}"
+    path: "{{ docroot }}"
     state: directory
-    mode: 0755
+    setype: httpd_sys_content_t
     recurse: yes
+
+# This is brittle, and it sucks
+- name: set docroot
+  replace:
+    dest: /etc/httpd/conf/httpd.conf
+    regexp: '\/var\/www\/html'
+    replace: "{{ docroot_dir }}"
 
 - name: Mount the volume
   mount:
