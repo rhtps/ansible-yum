@@ -1,0 +1,18 @@
+---
+- name: install EPEL rpm
+  yum:
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    state: present
+  when: epel_from == "web"
+
+- name: copy EPEL rpm
+  file:
+    src: "{{ epel_rpm }}"
+    dest: /tmp/
+  when: epel_from == "file"
+
+- name: install EPEL rpm
+  yum:
+    name: "/tmp/{{ epel_rpm }}"
+    state: present
+  when: epel_from == "file"

@@ -1,0 +1,15 @@
+---
+- name: Subscribe to RHN
+  redhat_subscription:
+    state: present
+    username: "{{ rhn_username }}"
+    password: "{{ rhn_password }}"
+    autosubscribe: true
+
+# Currently no support for repo manipulation in redhat_subscription module
+- name: Disable all repos
+  command: subscription-manager repos --disable="*"
+
+- name: Enable OpenShift repos
+  command: subscription-manager repos --enable="{{ item }}"
+  with_items: "{{ repo_names }}"

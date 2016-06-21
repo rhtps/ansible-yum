@@ -1,0 +1,41 @@
+---
+# vars file for yum
+
+# Options are cdn or yum
+pull_from: cdn
+
+# Options are web or file
+epel: true
+epel_from: web
+# If you're in a disconnected environment, you can put the epel rpm in
+# the files directory of this role. Set epel_from to 'file' and set
+# the rpm name below.
+epel_rpm: epel_rpm_name.rpm
+
+# If CentOS is true, we'll mirror the following CentOS repos
+centos: true
+centos_repo: CentOS-Base.repo
+centos_repos:
+  - base
+  - extras
+  - updates
+
+repo_names:
+  - rhel-7-server-rpms
+  - rhel-7-server-extras-rpms
+  - rhel-7-server-ose-3.2-rpms
+
+# Requires a dedicated volume for yum repo storage
+docroot_dir: /var/www/html
+docroot_dev: /dev/xvdb
+
+tarball_name: yum_repos.tar.gz
+
+# When s3 is true, this role will copy tarballs of the yum repos to the
+# target bucket.
+s3: true
+s3_target_bucket: "{{ lookup('env','cluster_id') }}"
+
+# When dvd is true, 3.9GB split tarballs will also be put in s3. Requires
+# s3 to be set to true.
+dvd: true

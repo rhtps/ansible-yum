@@ -1,0 +1,26 @@
+---
+### Optional CentOS mirroring
+- name: copy CentOS base yum repo file
+  copy:
+    src: "{{ centos_repo }}"
+    dest: "/etc/yum.repos.d/{{ centos_repo }}"
+    owner: root
+    mode: 0644
+
+- name: rebuild the yum cache
+  command: yum makecache
+
+- name: make CentOS directories
+  file:
+    name: "{{ docroot_dir }}/centos"
+    state: directory
+    recurse: yes
+
+- name: sync CentOS repos (takes up to 30 minutes)
+  command: "reposync -n -r {{ item }} -p {{ docroot_dir }}/centos"
+  with_items: "{{ centos_repos }}"
+  async: 1800
+  poll: 60
+
+- name: set up local CentOS repo
+  command: "createrepo --database {{ docroot_dir }}/centos"
