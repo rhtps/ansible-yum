@@ -1,11 +1,21 @@
 ---
 # vars file for yum
 
-# Options are cdn or yum
+# Options are cdn or yum.
+# If you're using yum, you don't need the username and password variables.
 pull_from: cdn
+rhn_username: "{{ lookup('env','rhn_username') }}"
+rhn_password: "{{ lookup('env','rhn_password') }}"
 
-# Options are web or file
+# Red Hat repos to sync. OSE 3.2 repos listed below as an example.
+repo_names:
+  - rhel-7-server-rpms
+  - rhel-7-server-extras-rpms
+  - rhel-7-server-ose-3.2-rpms
+
+# Extra Packages for Enterprise Linux (EPEL)
 epel: true
+# Options are web or file
 epel_from: web
 # If you're in a disconnected environment, you can put the epel rpm in
 # the files directory of this role. Set epel_from to 'file' and set
@@ -20,15 +30,11 @@ centos_repos:
   - extras
   - updates
 
-repo_names:
-  - rhel-7-server-rpms
-  - rhel-7-server-extras-rpms
-  - rhel-7-server-ose-3.2-rpms
-
 # Requires a dedicated volume for yum repo storage
 docroot_dir: /var/www/html
 docroot_dev: /dev/xvdb
 
+# Name for the resultant tarball
 tarball_name: yum_repos.tar.gz
 
 # When s3 is true, this role will copy tarballs of the yum repos to the
