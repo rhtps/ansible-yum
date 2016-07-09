@@ -3,3 +3,4 @@
 if [ ! -b {{ docroot_dev }}1 ]
 then
     (echo n; echo p; echo; echo; echo; echo w) | fdisk {{ docroot_dev }}
+fi

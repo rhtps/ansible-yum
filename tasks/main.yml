@@ -13,22 +13,8 @@
 - name: Format EBS volume
   filesystem:
     fstype: xfs
-    dev: "{{ docroot_dev }}"
+    dev: "{{ docroot_dev }}1"
     force: no
-
-- name: make docroot
-  file:
-    path: "{{ docroot }}"
-    state: directory
-    setype: httpd_sys_content_t
-    recurse: yes
-
-# This is brittle, and it sucks
-- name: set docroot
-  replace:
-    dest: /etc/httpd/conf/httpd.conf
-    regexp: '\/var\/www\/html'
-    replace: "{{ docroot_dir }}"
 
 - name: Mount the volume
   mount:
@@ -36,6 +22,13 @@
     src: /dev/xvdb1
     fstype: xfs
     state: mounted
+
+- name: make docroot
+  file:
+    path: "{{ docroot_dir }}"
+    state: directory
+    setype: httpd_sys_content_t
+    recurse: yes
 
 - name: Make the repo directories
   file:
@@ -58,12 +51,19 @@
 
 - name: setup EPEL
   include: epel.yml
-  when: sync_epel
+  when: epel
 
 - name: Install httpd
   yum:
     name: httpd
     state: present
+
+# This is brittle, and it sucks
+- name: set docroot
+  replace:
+    dest: /etc/httpd/conf/httpd.conf
+    regexp: '\/var\/www\/html'
+    replace: "{{ docroot_dir }}"
 
 - name: Start and enable httpd
   service:

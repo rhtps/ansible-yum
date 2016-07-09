@@ -23,7 +23,7 @@ epel_from: web
 epel_rpm: epel_rpm_name.rpm
 
 # If CentOS is true, we'll mirror the following CentOS repos
-centos: true
+centos: false
 centos_repo: CentOS-Base.repo
 centos_repos:
   - base
