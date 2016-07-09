@@ -40,7 +40,7 @@ tarball_name: yum_repos.tar.gz
 # When s3 is true, this role will copy tarballs of the yum repos to the
 # target bucket.
 s3: true
-s3_target_bucket: "{{ lookup('env','cluster_id') }}"
+s3_target_bucket: "{{ cluster_id }}"
 
 # When dvd is true, 3.9GB split tarballs will also be put in s3. Requires
 # s3 to be set to true.

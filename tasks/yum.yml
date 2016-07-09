@@ -1,0 +1,142 @@
+---
+# tasks file for yum
+- name: Build partition script
+  template:
+    src: partition.j2
+    dest: /tmp/partition.sh
+    owner: root
+    mode: 0700
+
+- name: Execute the partition script
+  command: /tmp/partition.sh
+
+- name: Format EBS volume
+  filesystem:
+    fstype: xfs
+    dev: "{{ docroot_dev }}1"
+    force: no
+
+- name: Mount the volume
+  mount:
+    name: "{{ docroot_dir }}"
+    src: /dev/xvdb1
+    fstype: xfs
+    state: mounted
+
+- name: make docroot
+  file:
+    path: "{{ docroot_dir }}"
+    state: directory
+    setype: httpd_sys_content_t
+    recurse: yes
+
+- name: Make the repo directories
+  file:
+    path: "{{ docroot_dir }}/{{ item }}"
+    state: directory
+    mode: 0755
+  with_items: "{{ repo_names }}"
+
+- name: Make the EPEL repo directory
+  file:
+    path: "{{ docroot_dir }}/epel"
+    state: directory
+    mode: 0755
+  when: epel
+
+- name: Get rid of RHUI repo files if present
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "/etc/yum.repos.d/redhat-rhui.repo"
+    - "/etc/yum.repos.d/redhat-rhui-client-config.repo"
+    - "/etc/yum.repos.d/rhui-load-balancers.repo"
+
+- include: cdn.yml
+  when: pull_from == "cdn"
+
+- name: setup EPEL
+  include: epel.yml
+  when: epel
+
+- name: Install httpd
+  yum:
+    name: httpd
+    state: present
+
+# This is brittle, and it sucks
+- name: set docroot
+  replace:
+    dest: /etc/httpd/conf/httpd.conf
+    regexp: '\/var\/www\/html'
+    replace: "{{ docroot_dir }}"
+
+- name: Start and enable httpd
+  service:
+    name: httpd
+    state: started
+    enabled: yes
+
+- name: make SELinux context persistent
+  command: "semanage fcontext -a -t httpd_sys_content_t '{{ docroot_dir }}(/.*)*'"
+  when: docroot_dir != "/var/www/html"
+
+- name: restore SELinux context
+  command: "restorecon -R {{ docroot_dir }}"
+
+- name: install createrepo
+  yum:
+    name: createrepo
+    state: present
+
+# We'll give this 30 minutes to complete, checking every minute
+- name: sync OpenShift repos (takes up to 30 minutes)
+  command: "reposync -n -r {{ item }} -p {{ docroot_dir }}"
+  with_items: "{{ repo_names }}"
+  async: 1800
+  poll: 60
+
+- name: set up local yum OSE repos
+  command: "createrepo --database {{ docroot_dir }}/{{ item }}/Packages"
+  with_items: "{{ repo_names }}"
+
+- name: set up local yum EPEL repos
+  command: "createrepo --database {{ docroot_dir }}/epel"
+  when: epel
+
+- include: centos.yml
+  when: centos
+
+- name: Remove existing tar file
+  file:
+    path: "{{ docroot_dir }}/{{ tarball_name }}"
+    state: absent
+
+- name: tar up repos (takes up to 20 minutes)
+  shell: "tar czf {{ tarball_name }} *"
+  args:
+    chdir: "{{ docroot_dir }}"
+  async: 1200
+  poll: 60
+
+- name: split tarball into dvd sizes (takes up to 5 minutes)
+  command: "split -b 3900m {{ docroot_dir }}/{{ tarball_name }}"
+  when: dvd
+  async: 300
+  poll: 60
+
+- name: install boto Python module
+  yum:
+    name: python-boto
+    state: present
+
+- name: copy to s3
+  s3:
+    aws_access_key: "{{ lookup('env','aws_access_key') }}"
+    aws_secret_key: "{{ lookup('env','aws_secret_key') }}"
+    bucket: "{{ s3_target_bucket }}"
+    object: "/{{ tarball_name }}"
+    src: "{{ docroot_dir }}/{{ tarball_name }}"
+    mode: put
+  when: s3
