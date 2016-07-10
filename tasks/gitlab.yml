@@ -1,0 +1,14 @@
+---
+- name: make the GitLab directory
+  file:
+    name: "{{ docroot_dir }}/gitlab"
+    state: directory
+    recurse: yes
+
+- name: download the GitLab rpm
+  command: "curl -LJO {{ gitlab_url }} > {{ gitlab_rpm }}"
+  args:
+    chdir: "{{ docroot_dir }}/gitlab"
+
+- name: set up the GitLab repo
+  command: "createrepo --database {{ docroot_dir }}/gitlab"

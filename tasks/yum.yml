@@ -108,6 +108,9 @@
 - include: centos.yml
   when: centos
 
+- include: gitlab.yml
+  when: gitlab
+
 - name: Remove existing tar file
   file:
     path: "{{ docroot_dir }}/{{ tarball_name }}"
