@@ -19,7 +19,7 @@
 - name: Mount the volume
   mount:
     name: "{{ docroot_dir }}"
-    src: /dev/xvdb1
+    src: "{{ docroot_dev }}1"
     fstype: xfs
     state: mounted
 
