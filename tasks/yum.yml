@@ -136,7 +136,7 @@
     aws_access_key: "{{ lookup('env','aws_access_key') }}"
     aws_secret_key: "{{ lookup('env','aws_secret_key') }}"
     bucket: "{{ s3_target_bucket }}"
-    object: "/{{ tarball_name }}"
-    src: "{{ docroot_dir }}/{{ tarball_name }}"
+#    object: "/{{ tarball_name }}"
+    src: "{{ docroot_dir }}/{{ tarball_name }}*"
     mode: put
   when: s3
