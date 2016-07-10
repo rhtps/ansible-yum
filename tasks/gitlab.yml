@@ -6,7 +6,8 @@
     recurse: yes
 
 - name: download the GitLab rpm
-  command: "curl -LJO {{ gitlab_url }} > {{ gitlab_rpm }}"
+  shell: "curl -LJO {{ gitlab_url }} > {{ gitlab_rpm }}"
+#    creates: "{{ docroot_dir }}/gitlab/{{ gitlab_rpm }}"
   args:
     chdir: "{{ docroot_dir }}/gitlab"
 
