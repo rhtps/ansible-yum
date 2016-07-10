@@ -131,12 +131,13 @@
     name: python-boto
     state: present
 
-- name: copy to s3
-  s3:
-    aws_access_key: "{{ lookup('env','aws_access_key') }}"
-    aws_secret_key: "{{ lookup('env','aws_secret_key') }}"
-    bucket: "{{ s3_target_bucket }}"
+# This is broken and I don't feel like fixing it right now.
+#- name: copy to s3
+#  s3:
+#    aws_access_key: "{{ lookup('env','aws_access_key') }}"
+#    aws_secret_key: "{{ lookup('env','aws_secret_key') }}"
+#    bucket: "{{ s3_target_bucket }}"
 #    object: "/{{ tarball_name }}"
-    src: "{{ docroot_dir }}/{{ tarball_name }}*"
-    mode: put
-  when: s3
+#    src: "{{ docroot_dir }}/{{ tarball_name }}*"
+#    mode: put
+#  when: s3
