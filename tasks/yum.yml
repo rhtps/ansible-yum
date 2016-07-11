@@ -55,10 +55,14 @@
 
 - include: cdn.yml
   when: pull_from == "cdn"
+  tags:
+    - yum_sync
 
 - name: setup EPEL
   include: epel.yml
   when: epel
+  tags:
+    - yum_sync
 
 - name: Install httpd
   yum:
@@ -96,20 +100,30 @@
   with_items: "{{ repo_names }}"
   async: 1800
   poll: 60
+  tags:
+    - yum_sync
 
 - name: set up local yum OSE repos
   command: "createrepo --database {{ docroot_dir }}/{{ item }}/Packages"
   with_items: "{{ repo_names }}"
+  tags:
+    - yum_sync
 
 - name: set up local yum EPEL repos
   command: "createrepo --database {{ docroot_dir }}/epel"
   when: epel
+  tags:
+    - yum_sync
 
 - include: centos.yml
   when: centos
+  tags:
+    - yum_sync
 
 - include: gitlab.yml
   when: gitlab
+#  tags:
+#    - yum_sync
 
 - name: Remove existing tar file
   file:
@@ -122,12 +136,16 @@
     chdir: "{{ docroot_dir }}"
   async: 1200
   poll: 60
+  tags:
+    - yum_sync
 
 - name: split tarball into dvd sizes (takes up to 5 minutes)
   command: "split -b 3900m {{ docroot_dir }}/{{ tarball_name }}"
   when: dvd
   async: 300
   poll: 60
+  tags:
+    - yum_sync
 
 - name: install boto Python module
   yum:
