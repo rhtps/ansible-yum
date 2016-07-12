@@ -1,10 +1,13 @@
 ---
+# This broke and I'm not sure why. Doing it the stupid way...
 - name: Subscribe to RHN
   redhat_subscription:
     state: present
     username: "{{ rhn_username }}"
     password: "{{ rhn_password }}"
     autosubscribe: true
+#- name: Subscribe to RUN
+#  command: subscription-manager subscribe --pool 8a85f98150a5bb0a0150a6b74c6a33cd
 
 # Currently no support for repo manipulation in redhat_subscription module
 - name: Disable all repos

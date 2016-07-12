@@ -162,3 +162,9 @@
 #    src: "{{ docroot_dir }}/{{ tarball_name }}*"
 #    mode: put
 #  when: s3
+
+- name: make repo file for later use in instances
+  connection: local
+  template:
+    src: ose_disconn.j2
+    dest: ./ose_disconn.repo

@@ -1,0 +1,34 @@
+{% for repo in repo_names %}
+[{{ repo }}]
+name={{ repo }}
+baseurl=http://{{ ec2_private_ip_address }}/{{ repo }}/Packages
+enabled=1
+gpgcheck=0
+
+{% endfor %}
+{% if epel %}
+[epel]
+name=epel
+baseurl=http://{{ ec2_private_ip_address }}/epel
+enabled=1
+gpgcheck=0
+
+{% endif %}
+{% if gitlab %}
+[gitlab]
+name=gitlab
+baseurl=http://{{ ec2_private_ip_address }}/gitlab
+enabled=1
+gpgcheck=0
+
+{% endif %}
+{% if centos %}
+{% for repo in centos_repos %}
+[{{ repo }}]
+name={{ repo }}
+baseurl=http://{{ ec2_private_ip_address }}/{{ repo }}
+enabled=1
+gpgcheck=0
+
+{% endfor %}
+{% endif %}
