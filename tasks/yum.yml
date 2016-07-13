@@ -140,13 +140,15 @@
   tags:
     - yum_sync
 
-- name: split tarball into dvd sizes (takes up to 5 minutes)
-  command: "split -b 3900m {{ docroot_dir }}/{{ tarball_name }}"
-  when: dvd
-  async: 300
-  poll: 60
-  tags:
-    - yum_sync
+# TODO: this is broken and puts the split files on / which fills up the
+# volume. Disabled for now.
+#- name: split tarball into dvd sizes (takes up to 5 minutes)
+#  command: "split -b 3900m {{ docroot_dir }}/{{ tarball_name }}"
+#  when: dvd
+#  async: 300
+#  poll: 60
+#  tags:
+#    - yum_sync
 
 - name: install boto Python module
   yum:
