@@ -1,5 +1,17 @@
 ---
 # tasks file for yum
+- name: open http for internal hosts
+  firewalld:
+    rich_rule: 'rule family="ipv4" source address="192.168.0.0/16" service name="http" accept'
+    permanent: true
+    state: enabled
+
+- name: open port 5000 for internal hosts
+  firewalld:
+    rich_rule: 'rule family="ipv4" source address="192.168.0.0/16" port port="5000" protocol="tcp" accept'
+    permanent: true
+    state: enabled
+
 - name: Build partition script
   template:
     src: partition.j2
