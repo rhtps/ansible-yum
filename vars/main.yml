@@ -12,6 +12,9 @@ repo_names:
   - rhel-7-server-rpms
   - rhel-7-server-extras-rpms
   - rhel-7-server-ose-3.2-rpms
+  - rh-gluster-3-for-rhel-7-server-rpms
+  - rh-gluster-3-for-rhel-7-server-rpms
+  - rh-gluster-3-nfs-for-rhel-7-server-rpms
 
 # Extra Packages for Enterprise Linux (EPEL)
 epel: true
