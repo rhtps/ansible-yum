@@ -51,6 +51,7 @@ github_repos:
   - https://github.com/openshift/nodejs-ex
   - https://github.com/openshift/rails-ex
   - https://github.com/openshift/ruby-ex
+  - https://github.com/jason-callaway/openshift-disconnected
 
 # Name for the resultant tarball
 tarball_name: yum_repos.tar.gz
