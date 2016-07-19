@@ -17,9 +17,9 @@
     state: present
   when: epel_from == "file"
 
-- name: sync EPEL repos (takes up to 30 minutes)
+- name: sync EPEL repos (takes up to 60 minutes)
   command: "reposync -n -r epel -p {{ docroot_dir }}/epel"
-  async: 1800
+  async: 3600
   poll: 60
 
 - name: set up local EPEL repo

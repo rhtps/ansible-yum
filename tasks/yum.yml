@@ -107,11 +107,10 @@
     name: createrepo
     state: present
 
-# We'll give this 30 minutes to complete, checking every minute
-- name: sync OpenShift repos (takes up to 30 minutes)
+- name: sync OpenShift repos (takes up to 120 minutes)
   command: "reposync -n -r {{ item }} -p {{ docroot_dir }}"
   with_items: "{{ repo_names }}"
-  async: 1800
+  async: 7200
   poll: 60
   tags:
     - yum_sync
@@ -143,14 +142,21 @@
     path: "{{ docroot_dir }}/{{ tarball_name }}"
     state: absent
 
-- name: tar up repos (takes up to 20 minutes)
+- name: tar up repos (takes up to 60 minutes)
   shell: "tar czf {{ tarball_name }} *"
   args:
     chdir: "{{ docroot_dir }}"
-  async: 1200
+  async: 3600
   poll: 60
   tags:
     - yum_sync
+
+- name: m5dsum the tarball (takes up to 60 minutes)
+  shell: "md5sum {{ tarball_name }} > {{ tarball_name }}.md5"
+  args:
+    chdir: "{{ docroot_dir }}"
+  async: 3600
+  poll: 60
 
 # TODO: this is broken and puts the split files on / which fills up the
 # volume. Disabled for now.

@@ -16,10 +16,10 @@
     state: directory
     recurse: yes
 
-- name: sync CentOS repos (takes up to 30 minutes)
+- name: sync CentOS repos (takes up to 120 minutes)
   command: "reposync -n -r {{ item }} -p {{ docroot_dir }}/centos"
   with_items: "{{ centos_repos }}"
-  async: 1800
+  async: 7200
   poll: 60
 
 - name: set up local CentOS repo

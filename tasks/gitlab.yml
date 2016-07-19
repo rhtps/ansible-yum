@@ -27,3 +27,15 @@
 
 - name: set up the GitLab repo
   command: "createrepo --database {{ docroot_dir }}/gitlab"
+
+- name: install git client
+  yum:
+    name: git
+    state: present
+
+- name: clone all the GitHub repos
+  command: "git clone --recursive {{ item }}"
+  args:
+    chdir: "{{ docroot_dir }}/gitlab"
+  with_items:
+    - "{{ github_repos }}"
