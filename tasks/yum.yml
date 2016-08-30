@@ -1,5 +1,22 @@
 ---
 # tasks file for yum
+- name: ensure firewalld is installed
+  yum:
+    name: firewalld
+    state: present
+
+- name: disable iptables service
+  service:
+    name: iptables
+    state: stopped
+    enabled: no
+
+- name: enable firewalld servivces
+  service:
+    name: firewalld
+    state: started
+    enabled: yes
+
 - name: open http for internal hosts
   firewalld:
     rich_rule: 'rule family="ipv4" source address="192.168.0.0/16" service name="http" accept'
