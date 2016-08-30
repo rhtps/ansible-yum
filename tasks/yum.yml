@@ -5,11 +5,13 @@
     name: firewalld
     state: present
 
+# We'll ignore errors here just in case iptables isn't installed
 - name: disable iptables service
   service:
     name: iptables
     state: stopped
     enabled: no
+  ignore_errors: yes
 
 - name: enable firewalld servivces
   service:
