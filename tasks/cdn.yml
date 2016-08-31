@@ -7,8 +7,12 @@
     password: "{{ rhn_password }}"
     autosubscribe: false
 
+# This is dumb, but since the autosubscribe argument isn't working on the
+# above task, we have to ignore errors since the command is not idempotent.
+# TODO: open a bug
 - name: Subscribe to pool
   command: "subscription-manager subscribe --pool {{ rhn_pool }}"
+  ignore_errors: yes
 
 # Currently no support for repo manipulation in redhat_subscription module
 - name: Disable all repos
