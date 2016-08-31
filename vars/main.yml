@@ -6,6 +6,7 @@
 pull_from: cdn
 rhn_username: "{{ lookup('env','rhn_username') }}"
 rhn_password: "{{ lookup('env','rhn_password') }}"
+rhn_pool: "{{ lookup('env','rhn_pool') }}"
 
 # Red Hat repos to sync. OSE 3.2 repos listed below as an example.
 repo_names:
