@@ -41,9 +41,9 @@ docroot_dev: /dev/xvdb
 # GitLab CE URL
 gitlab: true
 gitlab_s3: true
-gitlab_rpm: "gitlab-ce-8.9.5-ce.0.el7.x86_64.rpm"
+gitlab_rpm: "gitlab-ce-8.11.5-ce.0.el7.x86_64.rpm"
 gitlab_url: "https://packages.gitlab.com/gitlab/gitlab-ce/packages/el/7/{{ gitlab_rpm }}/download"
-gitlab_s3_url: "https://s3.amazonaws.com/ose-disconn/gitlab-ce-8.9.5-ce.0.el7.x86_64.rpm"
+gitlab_s3_url: "https://s3.amazonaws.com/ose-disconn/{{ gitlab_rpm }}"
 github_repos:
   - https://github.com/openshift/cakephp-ex
   - https://github.com/openshift/dancer-ex
