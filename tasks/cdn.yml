@@ -6,6 +6,7 @@
     username: "{{ rhn_username }}"
     password: "{{ rhn_password }}"
     autosubscribe: false
+  ignore_errors: yes
 
 # This is dumb, but since the autosubscribe argument isn't working on the
 # above task, we have to ignore errors since the command is not idempotent.
