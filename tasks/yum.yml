@@ -165,6 +165,7 @@
   shell: "tar czf {{ tarball_name }} *"
   args:
     chdir: "{{ docroot_dir }}"
+    creates: "{{ tarball_name }}"
   async: 3600
   poll: 60
   tags:
@@ -205,6 +206,7 @@
 
 - name: make repo file for later use in instances
   connection: local
+  become: false
   template:
     src: ose_disconn.j2
-    dest: ./ose_disconn.repo
+    dest: .//{{ cluster_id }}}.repo
