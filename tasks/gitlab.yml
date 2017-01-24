@@ -1,4 +1,10 @@
 ---
+
+- name: clear GitLab directory if it exists
+  file:
+    name: "{{ docroot_dir }}/gitlab"
+    state: absent
+
 - name: make the GitLab directory
   file:
     name: "{{ docroot_dir }}/gitlab"
@@ -9,13 +15,8 @@
 # including an http redirect. So for now we'll skip this, since I can't brain
 # and we'll just grab the rpm from s3 instead. But this sucks and it's a pain
 # to update.
-- name: download the GitLab rpm
-  get_url:
-    url: "{{ gitlab_url }}"
-    dest: "{{ docroot_dir }}/gitlab/{{ gitlab_rpm }}"
-    mode: 0644
-    owner: root
-  when: not gitlab_s3
+#
+# UPDATE: using cURL to handle the redirect works
 
 #- name: download the GitLab rpm from S3
 #  get_url:
@@ -34,6 +35,7 @@
     state: present
 
 - name: clone all the GitHub repos
+#  git: repo={{ item }} dest={{ docroot_dir }}/gitlab recursive=true force=true
   command: "git clone --recursive {{ item }}"
   args:
     chdir: "{{ docroot_dir }}/gitlab"

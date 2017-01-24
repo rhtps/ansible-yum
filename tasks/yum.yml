@@ -1,5 +1,39 @@
 ---
 # tasks file for yum
+<<<<<<< HEAD
+=======
+- name: ensure firewalld is installed
+  yum:
+    name: firewalld
+    state: present
+
+# We'll ignore errors here just in case iptables isn't installed
+- name: disable iptables service
+  service:
+    name: iptables
+    state: stopped
+    enabled: no
+  ignore_errors: yes
+
+- name: enable firewalld servivces
+  service:
+    name: firewalld
+    state: started
+    enabled: yes
+
+- name: open http for internal hosts
+  firewalld:
+    rich_rule: 'rule family="ipv4" source address="192.168.0.0/16" service name="http" accept'
+    permanent: true
+    state: enabled
+
+- name: open port 5000 for internal hosts
+  firewalld:
+    rich_rule: 'rule family="ipv4" source address="192.168.0.0/16" port port="5000" protocol="tcp" accept'
+    permanent: true
+    state: enabled
+
+>>>>>>> 3cfc3671728b6206eb69d3790649844ac87d6703
 - name: Build partition script
   template:
     src: partition.j2
@@ -160,6 +194,7 @@
   shell: "tar czf {{ tarball_name }} *"
   args:
     chdir: "{{ docroot_dir }}"
+    creates: "{{ tarball_name }}"
   async: 3600
   poll: 60
   tags:
@@ -206,6 +241,7 @@
 
 - name: make repo file for later use in instances
   connection: local
+  become: false
   template:
     src: ose_disconn.j2
     dest: "./{{ cluster_id }}.repo"

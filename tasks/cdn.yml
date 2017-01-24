@@ -1,13 +1,22 @@
 ---
 # This broke and I'm not sure why. Doing it the stupid way...
-- name: Subscribe to RHN
+- name: Register with RHN
   redhat_subscription:
     state: present
     username: "{{ rhn_username }}"
     password: "{{ rhn_password }}"
-    autosubscribe: true
-#- name: Subscribe to RUN
-#  command: subscription-manager subscribe --pool 8a85f98150a5bb0a0150a6b74c6a33cd
+    autosubscribe: false
+  ignore_errors: yes
+
+# This is dumb, but since the autosubscribe argument isn't working on the
+# above task, we have to ignore errors since the command is not idempotent.
+# TODO: open a bug
+- name: Unsub everything
+  command: "subscription-manager unsubscribe --all"
+  ignore_errors: yes
+- name: Subscribe to pool
+  command: "subscription-manager subscribe --pool {{ rhn_pool }}"
+  ignore_errors: no
 
 # Currently no support for repo manipulation in redhat_subscription module
 - name: Disable all repos
