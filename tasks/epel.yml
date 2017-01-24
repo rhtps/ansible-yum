@@ -17,10 +17,15 @@
     state: present
   when: epel_from == "file"
 
+- name: ensure EPEL directory esists
+  file:
+    path: "{{ docroot_dir }}/epel"
+    state: directory
+
 - name: sync EPEL repos (takes up to 60 minutes)
   command: "reposync -n -r epel -p {{ docroot_dir }}/epel"
   async: 3600
   poll: 60
 
 - name: set up local EPEL repo
-  command: "createrepo --database {{ docroot_dir }}/epel"
+  command: "createrepo --database {{ docroot_dir }}/epel/epel"

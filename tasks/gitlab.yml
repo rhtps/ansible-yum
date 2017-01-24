@@ -17,13 +17,13 @@
     owner: root
   when: not gitlab_s3
 
-- name: download the GitLab rpm from S3
-  get_url:
-    url: "{{ gitlab_s3_url }}"
-    dest: "{{ docroot_dir }}/gitlab/{{ gitlab_rpm }}"
-    mode: 0644
-    owner: root
-  when: gitlab_s3
+#- name: download the GitLab rpm from S3
+#  get_url:
+#    url: "{{ gitlab_s3_url }}"
+#    dest: "{{ docroot_dir }}/gitlab/{{ gitlab_rpm }}"
+#    mode: 0644
+#    owner: root
+#  when: gitlab_s3
 
 - name: set up the GitLab repo
   command: "createrepo --database {{ docroot_dir }}/gitlab"
@@ -37,5 +37,6 @@
   command: "git clone --recursive {{ item }}"
   args:
     chdir: "{{ docroot_dir }}/gitlab"
+    creates: "{{ item.split('/')[-1] }}"
   with_items:
     - "{{ github_repos }}"

@@ -1,17 +1,5 @@
 ---
 # tasks file for yum
-- name: open http for internal hosts
-  firewalld:
-    rich_rule: 'rule family="ipv4" source address="192.168.0.0/16" service name="http" accept'
-    permanent: true
-    state: enabled
-
-- name: open port 5000 for internal hosts
-  firewalld:
-    rich_rule: 'rule family="ipv4" source address="192.168.0.0/16" port port="5000" protocol="tcp" accept'
-    permanent: true
-    state: enabled
-
 - name: Build partition script
   template:
     src: partition.j2
@@ -71,6 +59,34 @@
   tags:
     - yum_sync
 
+- name: ensure firewalld is installed
+  yum:
+    name: firewalld
+    state: latest
+
+- name: ensure firealld is started
+  service:
+    name: firewalld
+    state: started
+    enabled: yes
+
+- name: open http for internal hosts
+  firewalld:
+    rich_rule: 'rule family="ipv4" source address="192.168.0.0/16" service name="http" accept'
+    permanent: true
+    state: enabled
+
+- name: open port 5000 for internal hosts
+  firewalld:
+    rich_rule: 'rule family="ipv4" source address="192.168.0.0/16" port port="5000" protocol="tcp" accept'
+    permanent: true
+    state: enabled
+
+- name: install createrepo
+  yum:
+    name: createrepo
+    state: latest
+
 - name: setup EPEL
   include: epel.yml
   when: epel
@@ -102,10 +118,6 @@
 - name: restore SELinux context
   command: "restorecon -R {{ docroot_dir }}"
 
-- name: install createrepo
-  yum:
-    name: createrepo
-    state: present
 
 - name: sync OpenShift repos (takes up to 120 minutes)
   command: "reposync -n -r {{ item }} -p {{ docroot_dir }}"
@@ -134,13 +146,15 @@
 
 - include: gitlab.yml
   when: gitlab
-#  tags:
-#    - yum_sync
+  tags:
+    - yum_sync
 
 - name: Remove existing tar file
   file:
     path: "{{ docroot_dir }}/{{ tarball_name }}"
     state: absent
+  tags:
+    - yum_sync
 
 - name: tar up repos (takes up to 60 minutes)
   shell: "tar czf {{ tarball_name }} *"
@@ -157,6 +171,8 @@
     chdir: "{{ docroot_dir }}"
   async: 3600
   poll: 60
+  tags:
+    - yum_sync
 
 # TODO: this is broken and puts the split files on / which fills up the
 # volume. Disabled for now.
@@ -173,19 +189,23 @@
     name: python-boto
     state: present
 
-# This is broken and I don't feel like fixing it right now.
+# TODO: currently broken. Fix it.
 #- name: copy to s3
 #  s3:
 #    aws_access_key: "{{ lookup('env','aws_access_key') }}"
 #    aws_secret_key: "{{ lookup('env','aws_secret_key') }}"
 #    bucket: "{{ s3_target_bucket }}"
-#    object: "/{{ tarball_name }}"
-#    src: "{{ docroot_dir }}/{{ tarball_name }}*"
+#    src: "{{ docroot_dir }}/{{ item }}"
+#    object: "/{{ cluster_id }}/{{ item }}"
 #    mode: put
+#    overwrite: different
+#  with_items:
+#    - "{{ tarball_name }}"
+#    - "{{ tarball_name }}.md5"
 #  when: s3
 
 - name: make repo file for later use in instances
   connection: local
   template:
     src: ose_disconn.j2
-    dest: ./ose_disconn.repo
+    dest: "./{{ cluster_id }}.repo"

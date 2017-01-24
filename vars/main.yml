@@ -11,7 +11,7 @@ rhn_password: "{{ lookup('env','rhn_password') }}"
 repo_names:
   - rhel-7-server-rpms
   - rhel-7-server-extras-rpms
-  - rhel-7-server-ose-3.2-rpms
+  - rhel-7-server-ose-3.4-rpms
   - rh-gluster-3-for-rhel-7-server-rpms
   - rh-gluster-3-for-rhel-7-server-rpms
   - rh-gluster-3-nfs-for-rhel-7-server-rpms
@@ -53,8 +53,7 @@ github_repos:
   - https://github.com/openshift/ruby-ex
   - https://github.com/jason-callaway/openshift-disconnected
 
-# Name for the resultant tarball
-tarball_name: yum_repos.tar.gz
+tarball_name: ose_disconn.tar.gz
 
 # When s3 is true, this role will copy tarballs of the yum repos to the
 # target bucket.
